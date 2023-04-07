@@ -1,12 +1,16 @@
+import 'package:aplikasi_cookus/screens/dashboard.dart';
+import 'package:aplikasi_cookus/service/serviceAuth.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:aplikasi_cookus/constants.dart';
 import 'package:aplikasi_cookus/screens/register_view.dart';
-import 'package:aplikasi_cookus/screens/login_view.dart';
-import 'package:aplikasi_cookus/screens/dashboard.dart';
 
 class LoginPage extends StatelessWidget {
   static const routeName = "/loginPage";
+
+  TextEditingController UsernameController = TextEditingController();
+  TextEditingController PasswordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +38,7 @@ class LoginPage extends StatelessWidget {
                       Column(
                         children: [
                           TextFormField(
+                            controller: UsernameController,
                             decoration: InputDecoration(
                                 fillColor: Color(0xffF1F0F5),
                                 filled: true,
@@ -51,6 +56,7 @@ class LoginPage extends StatelessWidget {
                           ),
                           SizedBox(height: 30),
                           TextFormField(
+                            controller: PasswordController,
                             obscureText: true,
                             decoration: InputDecoration(
                                 fillColor: Color(0xffF1F0F5),
@@ -109,8 +115,17 @@ class LoginPage extends StatelessWidget {
                                 fontWeight: FontWeight.normal,
                                 height: 1),
                           ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, Dashboard.routeName);
+                          onPressed: () async {
+                            final message = await AuthService().login(
+                                username: UsernameController.text,
+                                password: PasswordController.text
+                            );
+                            if(message!.contains('Success')){
+                              Navigator.pushNamed(context, Dashboard.routeName);
+                            }
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(message)),
+                            );
                           },
                         ),
                       ],

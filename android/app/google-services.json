@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "143456599761",
+    "firebase_url": "https://cookus-974e6-default-rtdb.firebaseio.com",
+    "project_id": "cookus-974e6",
+    "storage_bucket": "cookus-974e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:143456599761:android:8c35fbf5c2ecdcc0d38ff0",
+        "android_client_info": {
+          "package_name": "com.example.aplikasi_cookus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "143456599761-2qrkrjjus1njj528c9ojt5fe2bsku2jc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSLGt-JxigEFxJmZ7Nxp0G2oBjfNdy2rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "143456599761-2qrkrjjus1njj528c9ojt5fe2bsku2jc.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "143456599761-g00p13i5o1jh9s9jj0puk6ghbc4u85fa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.aplikasiCookus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,27 +1,29 @@
+
 import 'dart:io';
-import 'dart:ui';
-import 'package:aplikasi_cookus/screens/dashboard.dart';
-import 'package:aplikasi_cookus/screens/dashboard.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:aplikasi_cookus/screens/MyRecipeScreen.dart';
-import 'package:aplikasi_cookus/menu/profile_view.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 
-class Create extends StatefulWidget {
-  const Create({super.key});
+import 'dashboard.dart';
+
+class EditResep extends StatefulWidget {
+
+  final keys;
+  const EditResep({Key? key, required this.keys}) : super(key: key);
 
   @override
-  State<Create> createState() => _CreateState();
+  State<EditResep> createState() => _EditResepState(keys);
 }
 
-class _CreateState extends State<Create> {
+class _EditResepState extends State<EditResep> {
+
+  final keys;
+  _EditResepState(this.keys);
 
   File? image;
   String? urlImage;
@@ -47,6 +49,39 @@ class _CreateState extends State<Create> {
     });
   }
 
+  bool loading = false;
+
+  Future<void> getData() async {
+
+    setState(() {
+      loading = true;
+    });
+
+    var judul = await FirebaseDatabase.instance.ref().child('public').child(keys).child('judul').once();
+    var deskripsi = await FirebaseDatabase.instance.ref().child('public').child(keys).child('deskripsi').once();
+    var image = await FirebaseDatabase.instance.ref().child('public').child(keys).child('image').once();
+
+    setState(() {
+      JudulController.text = judul.snapshot.value.toString();
+      DeskripsiController.text = deskripsi.snapshot.value.toString();
+      urlImage = image.snapshot.value.toString();
+    });
+
+    setState(() {
+      loading = false;
+    });
+
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -54,7 +89,7 @@ class _CreateState extends State<Create> {
       final userId = FirebaseAuth.instance.currentUser!.uid;
       try {
         if(urlImage != null){
-          await FirebaseDatabase.instance.ref().child('public').push().set({
+          await FirebaseDatabase.instance.ref().child('public').child(keys).set({
             'judul': JudulController.text,
             'deskripsi' : DeskripsiController.text,
             'image' : urlImage,
@@ -78,6 +113,12 @@ class _CreateState extends State<Create> {
           SnackBar(content: Text("Terjadi Kesalahan saat menyimpan data")),
         );
       }
+    }
+
+    if(loading){
+      return Center(
+        child: CircularProgressIndicator(),
+      );
     }
 
     return Container(
@@ -122,7 +163,7 @@ class _CreateState extends State<Create> {
                         size: 30,
                       ),
                       onPressed: () {
-                        Dashboard.routeName;
+                        Navigator.pop(context);
                       },
                     ),
                     Padding(
@@ -285,5 +326,6 @@ class _CreateState extends State<Create> {
         ),
       ),
     );
+
   }
 }
